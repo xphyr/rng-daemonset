@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: rng-daemon
+  labels:
+    k8s-app: rng-daemon
+spec:
+  selector:
+    matchLabels:
+      name: rng-daemon
+  template:
+    metadata:
+      labels:
+        name: rng-daemon
+    spec:
+      containers:
+        - name: rngutils
+          image: registry.xphyrlab.net:8443/rngutils/rngutils:latest
+          command: ["/sbin/rngd"]
+          args: ["-xjitter", "-xhwrng", "-xpkcs11", "-xrtlsdr", "-d", "-f"]
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+          securityContext:
+            runAsUser: 0
+            privileged: true
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
