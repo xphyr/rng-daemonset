@@ -1,5 +1,5 @@
-FROM fedora
+FROM fedora-minimal
 
-RUN dnf install -y rng-tools
+RUN microdnf install -y rng-tools && microdnf clean all
 
 CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
