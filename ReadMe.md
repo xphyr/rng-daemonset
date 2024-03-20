@@ -7,8 +7,8 @@ So you are using up all your randomness and need to seed /dev/random using the r
 Use the included Dockerfile to generate a container image with the rng-tools installed
 
 ```
-$ podman build -t <myregistry>/rngd-utils:latest .
-$ podman push <myregistry>/rngd-utils:latest
+$ podman build -t <myregistry>/rng-tools:latest .
+$ podman push <myregistry>/rng-tools:latest
 ```
 
 ## Update the rngd-daemonset.yml file
@@ -16,7 +16,7 @@ $ podman push <myregistry>/rngd-utils:latest
 Edit the `k8s/rng-daemonset.yml` file to point to the image you pushed in the previous section:
 
 ```
-          image: <myregistry>/rngutils/rngutils:latest
+          image: <myregistry>/rng-tools/rng-tools:latest
 ```
 
 >**NOTE:** The command line options in the rng-daemonset.yml file are designed to run on Intel Processors that support the Intel RDRAND Instruction set. You may need to tweak the options to meet your hardware needs. See [rng-tools](https://github.com/nhorman/rng-tools) for other options.

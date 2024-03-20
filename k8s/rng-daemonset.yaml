@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: rngutils
-          image: registry.xphyrlab.net:8443/rngutils/rngutils:latest
+          image: registry.xphyrlab.net/rng-tools/rng-tools:latest
           command: ["/sbin/rngd"]
           args: ["-xjitter", "-xhwrng", "-xpkcs11", "-xrtlsdr", "-f"]
           resources: {}
@@ -24,7 +24,8 @@ spec:
           imagePullPolicy: Always
           securityContext:
             runAsUser: 0
-            privileged: true
+            capabilities:
+              add: ["CAP_SYS_ADMIN"]
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
